@@ -1,35 +1,36 @@
 import streamlit as st
 import requests
 
-def send_message_to_server(message):
-    response = requests.post('http://127.0.0.1:5000/send_message', data={'message': message})
+url_base = 'http://127.0.0.1:5000'
+
+def get_messages_from_server():
+    response = requests.get(f'{url_base}/get_messages')
     print(response.status_code)
-    return response.status_code == 201
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error response: {response.status_code}, {response.text}")
+        return []
 
 # Create an input box for the user to type messages
-message = st.text_input("Type your message:")
+message = st.text_input("Digite sua mensagem:")
+
+def send_message_to_server(message):
+    response = requests.post(f'{url_base}/send_message', data={'message': message})
+    print(response.status_code)
+    return response.status_code == 200
 
 # Create a button to send the message to the server
 if st.button("Send"):
     if message:
         if send_message_to_server(message):
-            st.success("Message sent successfully") 
+            st.success("Mensagem enviada com sucesso")
         else:
-            st.error("Failed to send the message")
+            st.error("Falha ao enviar mensagem")
     else:
-        st.warning("Please enter a message")
+        st.warning("Por favor digite sua mensagem")
 
-# You can also display the chat history or incoming messages here
-# Use st.write or st.text to display the chat history
-
-def get_messages_from_server():
-    response = requests.get('http://127.0.0.1:5000/get_messages')
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return []
-
-# Display messages
+# Display the chat history or incoming messages
 messages = get_messages_from_server()
 for message in messages:
     st.write(message['message'])
