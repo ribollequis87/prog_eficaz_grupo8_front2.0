@@ -13,9 +13,15 @@ def get_messages_from_server():
         return []
     
 # Display the chat history or incoming messages
-messages = get_messages_from_server()
-for message in messages:
-    st.write(message['message'])
+# Fetch and display messages
+def display_messages():
+    messages = get_messages_from_server()
+
+    # Reverse the order of messages so that new messages appear at the bottom
+    messages = messages[::-1]
+
+    for message in messages:
+        st.write(message['message'])
 
 # Create an input box for the user to type messages
 message = st.text_input("Digite sua mensagem:")
@@ -34,3 +40,5 @@ if st.button("Send"):
             st.error("Falha ao enviar mensagem")
     else:
         st.warning("Por favor digite sua mensagem")
+
+display_messages()
