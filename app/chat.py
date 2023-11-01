@@ -11,6 +11,11 @@ def get_messages_from_server():
     else:
         print(f"Error response: {response.status_code}, {response.text}")
         return []
+    
+# Display the chat history or incoming messages
+messages = get_messages_from_server()
+for message in messages:
+    st.write(message['message'])
 
 # Create an input box for the user to type messages
 message = st.text_input("Digite sua mensagem:")
@@ -29,8 +34,3 @@ if st.button("Send"):
             st.error("Falha ao enviar mensagem")
     else:
         st.warning("Por favor digite sua mensagem")
-
-# Display the chat history or incoming messages
-messages = get_messages_from_server()
-for message in messages:
-    st.write(message['message'])
