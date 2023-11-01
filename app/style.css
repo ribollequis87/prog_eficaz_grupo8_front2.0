@@ -1,0 +1,8 @@
+/* Tentativa de mudar a ordem do display que mostra das mensagens e a caixa que envia texto */
+#messages_display {
+    order: 1;
+}
+
+#message_input {
+    order: 2;
+}
