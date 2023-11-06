@@ -1,5 +1,20 @@
 import streamlit as st
+from login import autenticacao
+from signup import cadastro
+from remedios import remedios
 import requests
+
+if 'pagina' not in st.session_state:
+    st.session_state['pagina'] = 'login'
+
+if 'username' not in st.session_state:
+    st.session_state['username'] = ''
+
+if 'senha' not in st.session_state:
+    st.session_state['senha'] = ''
+
+if 'autenticado' not in st.session_state:
+    st.session_state['autenticado'] = False
 
 url_base = 'http://127.0.0.1:5000'
 
@@ -47,7 +62,7 @@ if menu == 'Comunidade':
         return response.status_code == 200
 
     # Botão para enviar a mensagem
-    if st.button("Send"):
+    if st.button("Enviar"):
         if message:
             if send_message_to_server(message):
                 st.success("Mensagem enviada com sucesso")
@@ -69,3 +84,11 @@ if menu == 'Meus Medicamentos':
     st.markdown('<h2 style="text-align:center;">Meus Medicamentos</h2>', unsafe_allow_html=True)
     remedio = st.text_input("Adicione um novo Medicamento:")
     # response = requests.get('http://10.102.5.181:8501/avisos')              
+
+def main():
+    if st.session_state['pagina'] == "login":
+        autenticacao()
+    elif st.session_state['pagina'] == "cadastro":
+        cadastro()
+    elif st.session_state['pagina'] == 'remedios':
+        remedios()
