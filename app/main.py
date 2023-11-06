@@ -29,14 +29,28 @@ if menu == 'Comunidade':
             print(f"Error response: {response.status_code}, {response.text}")
             return []
 
+    def update_message_on_server(message):
+        message_id = message['_id']
+        response = requests.post(f'{url_base}/like_message/{message_id}')
+        if response.status_code == 200:
+            st.success("Mensagem curtida com sucesso")
+        else:
+            st.error("Falha ao curtir mensagem")
+
     # Mostra as mensagens do servidor
     def display_messages():
         messages = get_messages_from_server()
-
         messages = messages[::-1]
         messages.reverse()
 
-        message_display = st.text_area("Mensagens", value="\n".join(f"{message['message']} - {message['datetime']}" for message in messages), height=300, key="messages_display", disabled=True)
+        for idx, message in enumerate(messages):
+            st.write(f"{message['message']} - {message['datetime']}")
+            like_button = st.checkbox(f"Like ({message['likes']})", key=f"like_button_{idx}")
+            if like_button:
+                # Incrementa o número de curtidas and atualiza no servidor
+                messages[idx]['likes'] += 1
+                # Atualiza a mensagem no servidor
+                update_message_on_server(messages[idx])
 
     st.markdown('<h2 style="text-align:center;">Comunidade</h2>', unsafe_allow_html=True)
     message = st.text_input("Digite sua mensagem:", key="message_input")
