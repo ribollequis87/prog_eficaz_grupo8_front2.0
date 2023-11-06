@@ -36,7 +36,7 @@ if menu == 'Comunidade':
         messages = messages[::-1]
         messages.reverse()
 
-        message_display = st.text_area("Mensagens", value="\n".join(message['message'] for message in messages), height=300, key="messages_display", disabled=True)
+        message_display = st.text_area("Mensagens", value="\n".join(f"{message['message']} - {message['datetime']}" for message in messages), height=300, key="messages_display", disabled=True)
 
     st.markdown('<h2 style="text-align:center;">Comunidade</h2>', unsafe_allow_html=True)
     message = st.text_input("Digite sua mensagem:", key="message_input")
@@ -60,8 +60,8 @@ if menu == 'Comunidade':
 
     display_messages()
 
-    with open('app/style.css') as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+    # with open('app/style.css') as f:
+    #     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
         
 # 3- Meus Medicamentos        
 
