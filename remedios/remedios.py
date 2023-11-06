@@ -15,7 +15,7 @@ if 'autenticado' not in st.session_state:
 
 st.markdown('<h2 style="text-align:center;">Login</h2>', unsafe_allow_html=True)
 
-def remedio():
+def remedios():
     response = requests.get('http://10.102.5.181:8501/cadastro')
     remedio = st.text_input(label="Insira seu remédio", value='', key='remedio')
     frequencia = st.text_input(label="Insira sua frequência de uso", value='', key='frequencia')
@@ -32,5 +32,5 @@ def remedio():
             st.warning('Por favor, preencha todos os campos.')
 
 if st.button("Adicionar remédio"):
-    remedio()
+    remedios()
 
