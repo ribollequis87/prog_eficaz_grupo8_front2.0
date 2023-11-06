@@ -8,7 +8,7 @@ def register_user(username, email, password):
     response = requests.post(f'{url_base}/cadastro', json={'username': username, 'email': email, 'password': password})
     return response
 
-def main():
+def cadastro():
     st.title('Cadastro')
     
     response = requests.get('http://10.102.5.181:8501/cadastro')
@@ -16,7 +16,7 @@ def main():
     email = st.text_input("Insira seu e-mail")
     password = st.text_input(label="Insira sua senha", value='', key='senha', type='password')
     passoword2 = st.text_input(label="Confirme sua senha", value='', key='senha', type='password')
-
+    # diabete = st.text_input(label="Insira seu Username", value='', key='username')
     if st.button('Cadastrar'):
         if username and email and password:
             if password == passoword2:
@@ -38,4 +38,4 @@ if st.button("Ir para a página de login"):
     st.rerun()
 
 if __name__ == '__main__':
-    main()
+    cadastro()

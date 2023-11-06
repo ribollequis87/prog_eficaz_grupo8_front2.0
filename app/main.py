@@ -1,5 +1,5 @@
 import streamlit as st
-from login import autenticacao
+from login import main
 from signup import cadastro
 from remedios import remedios
 import requests
@@ -95,13 +95,49 @@ if menu == 'Comunidade':
 # 3- Meus Medicamentos        
 
 if menu == 'Meus Medicamentos':
-    st.markdown('<h2 style="text-align:center;">Meus Medicamentos</h2>', unsafe_allow_html=True)
-    remedio = st.text_input("Adicione um novo Medicamento:")
-    # response = requests.get('http://10.102.5.181:8501/avisos')              
+        url_base = 'http://127.0.0.1:5000'
+        st.markdown('<h2 style="text-align:center;">Medicamentos</h2>', unsafe_allow_html=True)
+
+        def get_remedios_from_server():
+            response = requests.get(f'{url_base}/remedios')
+            print(response.status_code)
+            if response.status_code == 200:
+                return response.json()
+            else:
+                print(f"Error response: {response.status_code}, {response.text}")
+                return []
+
+        # Mostra as mensagens do servidor
+        def display_remedios():
+            remedios = get_remedios_from_server()
+
+            remedios = remedios[::-1]
+            remedios.reverse()
+
+            remedios_display = st.text_area("Medicamentos", value="\n".join(f"{remedio['message']} - {remedio['datetime']}" for remedio in remedios), height=300, key="messages_display", disabled=True)
+
+        def send_remedio_to_server(remedio):
+            response = requests.post(f'{url_base}/remedio', data={'remedio': remedio})
+            print(response.status_code)
+            return response.status_code == 200
+        
+        remedio = st.text_input("Adicione um novo Medicamento:", key="remedio_input")
+        # Botão para enviar a mensagem
+        if st.button("Enviar"):
+            if remedio:
+                if send_message_to_server(remedio):
+                    st.success("Medicamento enviada com sucesso")
+                    # Limpa o campo de mensagem
+                    remedio = ""
+                else:
+                    st.error("Falha ao enviar mensagem")
+            else:
+                st.warning("Por favor, digite sua mensagem")            
+
 
 def main():
     if st.session_state['pagina'] == "login":
-        autenticacao()
+        main()
     elif st.session_state['pagina'] == "cadastro":
         cadastro()
     elif st.session_state['pagina'] == 'remedios':
