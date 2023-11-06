@@ -53,13 +53,16 @@ def login():
                 st.success('Login bem-sucedido. Redirecionando para a página inicial...')
                 # redirecionar para a página inicial
                 sleep(0.5)
-                switch_page("Home")
+                switch_page("Feed")
 
                 return response.json()
             else:
                 st.error(f'Erro ao fazer o login: {response.text}')
         else:
             st.warning('Por favor, preencha todos os campos.')
+
+    if st.button('Não tem cadastro? Cadastre-se!'):
+        switch_page("Cadastro")
 
 if __name__ == '__main__':
     login()

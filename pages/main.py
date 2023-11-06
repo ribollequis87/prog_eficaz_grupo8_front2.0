@@ -8,27 +8,24 @@ from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(page_title="Feed", layout="wide", initial_sidebar_state="expanded")
 
-st.markdown(
-    """
-<style>
-    [data-testid="collapsedControl"] {
-        display: none
-    }
+# st.markdown(
+#     """
+# <style>
+#     [data-testid="collapsedControl"] {
+#         display: none
+#     }
 
-    [data-testid="stSidebar"] {
-        display: none;
-    }
-</style>
-""",
-    unsafe_allow_html=True,
-)
+#     [data-testid="stSidebar"] {
+#         display: none;
+#     }
+# </style>
+# """,
+#     unsafe_allow_html=True,
+# )
 
 show_pages(
     [
         Page("Home.py", "Home"),
-        Page("pages/login.py", "Login"),
-        Page("pages/signup.py", "Cadastro"),
-        Page("pages/remedios.py", "Meus Medicamentos"),
         Page("pages/main.py", "Feed")
     ]
 )
@@ -47,9 +44,13 @@ if 'autenticado' not in st.session_state:
 
 url_base = 'http://127.0.0.1:5000'
 
-st.set_page_config(page_title="Projeto", layout="wide", initial_sidebar_state="expanded")
 
 menu = st.sidebar.selectbox('Menu', ['Home','Comunidade', 'Meus Medicamentos'])
+
+# botão de logout que siwtch para page de login
+if st.sidebar.button('Logout'):
+    switch_page('Home')
+
 
 # 1- Home
 
@@ -73,28 +74,13 @@ if menu == 'Comunidade':
             print(f"Error response: {response.status_code}, {response.text}")
             return []
 
-    def update_message_on_server(message):
-        message_id = message['_id']
-        response = requests.post(f'{url_base}/like_message/{message_id}')
-        if response.status_code == 200:
-            st.success("Mensagem curtida com sucesso")
-        else:
-            st.error("Falha ao curtir mensagem")
-
     # Mostra as mensagens do servidor
     def display_messages():
         messages = get_messages_from_server()
         messages = messages[::-1]
         messages.reverse()
 
-        for idx, message in enumerate(messages):
-            st.write(f"{message['message']} - {message['datetime']}")
-            like_button = st.checkbox(f"Like ({message['likes']})", key=f"like_button_{idx}")
-            if like_button:
-                # Incrementa o número de curtidas and atualiza no servidor
-                messages[idx]['likes'] += 1
-                # Atualiza a mensagem no servidor
-                update_message_on_server(messages[idx])
+        message_display = st.text_area("Mensagens", value="\n".join(f"{message['message']} - {message['datetime']}" for message in messages), height=300, key="messages_display", disabled=True)
 
     st.markdown('<h2 style="text-align:center;">Comunidade</h2>', unsafe_allow_html=True)
     message = st.text_input("Digite sua mensagem:", key="message_input")
