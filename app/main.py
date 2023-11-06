@@ -1,8 +1,9 @@
 import streamlit as st
-from login import autenticacao
-from signup import cadastro
-from remedios import remedios
+# from ..login import autenticacao
+# from signup import cadastro
+# from remedios import remedios
 import requests
+import time
 
 if 'pagina' not in st.session_state:
     st.session_state['pagina'] = 'login'
@@ -51,7 +52,7 @@ if menu == 'Comunidade':
             st.success("Mensagem curtida com sucesso")
         else:
             st.error("Falha ao curtir mensagem")
-
+    
     # Mostra as mensagens do servidor
     def display_messages():
         messages = get_messages_from_server()
@@ -60,12 +61,14 @@ if menu == 'Comunidade':
 
         for idx, message in enumerate(messages):
             st.write(f"{message['message']} - {message['datetime']}")
-            like_button = st.checkbox(f"Like ({message['likes']})", key=f"like_button_{idx}")
+            like_button = st.button(f"❤️ ({message['likes']})", key=f"like_button_{idx}")
             if like_button:
                 # Incrementa o número de curtidas and atualiza no servidor
+                st.success("mem mama")
                 messages[idx]['likes'] += 1
                 # Atualiza a mensagem no servidor
                 update_message_on_server(messages[idx])
+    
 
     st.markdown('<h2 style="text-align:center;">Comunidade</h2>', unsafe_allow_html=True)
     message = st.text_input("Digite sua mensagem:", key="message_input")
@@ -99,10 +102,10 @@ if menu == 'Meus Medicamentos':
     remedio = st.text_input("Adicione um novo Medicamento:")
     # response = requests.get('http://10.102.5.181:8501/avisos')              
 
-def main():
-    if st.session_state['pagina'] == "login":
-        autenticacao()
-    elif st.session_state['pagina'] == "cadastro":
-        cadastro()
-    elif st.session_state['pagina'] == 'remedios':
-        remedios()
+# def main():
+#     if st.session_state['pagina'] == "login":
+#         autenticacao()
+#     elif st.session_state['pagina'] == "cadastro":
+#         cadastro()
+#     elif st.session_state['pagina'] == 'remedios':
+#         remedios()
