@@ -1,9 +1,37 @@
 import streamlit as st
-# from ..login import autenticacao
+# from login import login
 # from signup import cadastro
 # from remedios import remedios
 import requests
-import time
+from st_pages import Page, show_pages, add_page_title
+from streamlit_extras.switch_page_button import switch_page
+
+st.set_page_config(page_title="Feed", layout="wide", initial_sidebar_state="expanded")
+
+st.markdown(
+    """
+<style>
+    [data-testid="collapsedControl"] {
+        display: none
+    }
+
+    [data-testid="stSidebar"] {
+        display: none;
+    }
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
+show_pages(
+    [
+        Page("Home.py", "Home"),
+        Page("pages/login.py", "Login"),
+        Page("pages/signup.py", "Cadastro"),
+        Page("pages/remedios.py", "Meus Medicamentos"),
+        Page("pages/main.py", "Feed")
+    ]
+)
 
 if 'pagina' not in st.session_state:
     st.session_state['pagina'] = 'login'
@@ -52,7 +80,7 @@ if menu == 'Comunidade':
             st.success("Mensagem curtida com sucesso")
         else:
             st.error("Falha ao curtir mensagem")
-    
+
     # Mostra as mensagens do servidor
     def display_messages():
         messages = get_messages_from_server()
@@ -61,14 +89,12 @@ if menu == 'Comunidade':
 
         for idx, message in enumerate(messages):
             st.write(f"{message['message']} - {message['datetime']}")
-            like_button = st.button(f"❤️ ({message['likes']})", key=f"like_button_{idx}")
+            like_button = st.checkbox(f"Like ({message['likes']})", key=f"like_button_{idx}")
             if like_button:
                 # Incrementa o número de curtidas and atualiza no servidor
-                st.success("mem mama")
                 messages[idx]['likes'] += 1
                 # Atualiza a mensagem no servidor
                 update_message_on_server(messages[idx])
-    
 
     st.markdown('<h2 style="text-align:center;">Comunidade</h2>', unsafe_allow_html=True)
     message = st.text_input("Digite sua mensagem:", key="message_input")
@@ -104,7 +130,7 @@ if menu == 'Meus Medicamentos':
 
 # def main():
 #     if st.session_state['pagina'] == "login":
-#         autenticacao()
+#         login()
 #     elif st.session_state['pagina'] == "cadastro":
 #         cadastro()
 #     elif st.session_state['pagina'] == 'remedios':

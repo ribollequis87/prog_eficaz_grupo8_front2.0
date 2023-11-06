@@ -1,5 +1,34 @@
 import streamlit as st
 import requests
+from st_pages import Page, show_pages, add_page_title
+from streamlit_extras.switch_page_button import switch_page
+
+st.set_page_config(initial_sidebar_state="collapsed", page_title="Remédios")
+
+st.markdown(
+    """
+<style>
+    [data-testid="collapsedControl"] {
+        display: none
+    }
+
+    [data-testid="stSidebar"] {
+        display: none;
+    }
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
+show_pages(
+    [
+        Page("Home.py", "Home"),
+        Page("pages/login.py", "Login"),
+        Page("pages/signup.py", "Cadastro"),
+        Page("pages/remedios.py", "Meus Medicamentos"),
+        Page("pages/main.py", "Feed")
+    ]
+)
 
 if 'pagina' not in st.session_state:
     st.session_state['pagina'] = 'login'
