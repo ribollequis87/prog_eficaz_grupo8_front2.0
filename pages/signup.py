@@ -34,7 +34,7 @@ show_pages(
 )
 
 def send_user_to_server(username, email, password):
-    url_base = 'http://127.0.0.1:5000'
+    url_base = 'https://sweetchat-dd71ea0a10a1.herokuapp.com'
     
     response = requests.post(f'{url_base}/cadastro', json={'username': username, 'email': email, 'password': password})
     print(response.status_code)

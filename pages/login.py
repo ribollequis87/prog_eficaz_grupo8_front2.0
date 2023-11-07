@@ -32,12 +32,12 @@ show_pages(
 )
 
 def login_user(username, password):
-    url_base = 'http://127.0.0.1:5000'
+    url_base = 'https://sweetchat-dd71ea0a10a1.herokuapp.com'
     response = requests.post(f'{url_base}/login', json={'username': username, 'password': password})
     return response
 
 def login():
-    url_base = 'http://127.0.0.1:5000'
+    url_base = 'https://sweetchat-dd71ea0a10a1.herokuapp.com'
     response = requests.get(f'{url_base}/home')
 
     st.title('Login')
