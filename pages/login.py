@@ -51,8 +51,7 @@ def login():
             response = login_user(username, password)
             if response.status_code == 200:
                 st.success('Login bem-sucedido. Redirecionando para a página inicial...')
-                # redirecionar para a página inicial
-                sleep(0.5)
+                sleep(0.8)
                 switch_page("Feed")
 
                 return response.json()

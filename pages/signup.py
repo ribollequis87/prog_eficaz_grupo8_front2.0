@@ -52,7 +52,7 @@ def cadastro():
             if send_user_to_server(username, email, password):
                 st.success('Cadastro feito. Redirecionando para o login...')
                 # redirecionar para a página de login
-                sleep(0.5)
+                sleep(0.8)
                 switch_page("Login")
             else:
                 st.error(f'Erro no registro')
