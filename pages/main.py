@@ -24,7 +24,7 @@ if 'senha' not in st.session_state:
 if 'autenticado' not in st.session_state:
     st.session_state['autenticado'] = False
 
-url_base = 'http://127.0.0.1:5000'
+url_base = 'https://sweetchat-dd71ea0a10a1.herokuapp.com'
 
 
 menu = st.sidebar.selectbox('Menu', ['Home','Comunidade', 'Meus Medicamentos'])
@@ -44,7 +44,7 @@ if menu == 'Home':
 # 2- Comunidade
 
 if menu == 'Comunidade':
-    url_base = 'http://127.0.0.1:5000'
+    url_base = 'https://sweetchat-dd71ea0a10a1.herokuapp.com'
 
     def get_messages_from_server():
         response = requests.get(f'{url_base}/get_messages')
