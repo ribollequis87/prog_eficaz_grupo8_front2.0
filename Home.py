@@ -21,7 +21,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title('Home')
+st.title('Bem-Vindo(a) ao SweetChat')
 
 show_pages(
     [
@@ -33,8 +33,10 @@ show_pages(
     ]
 )
 
-if st.button('Login'):
-    switch_page("Login")
-
+st.subheader('Não tem uma conta em nossa comunidade? Crie uma!')
 if st.button('Cadastro'):
     switch_page("Cadastro")
+
+st.subheader('Já tem uma conta em nossa comunidade? Faça o login!')
+if st.button('Login'):
+    switch_page("Login")

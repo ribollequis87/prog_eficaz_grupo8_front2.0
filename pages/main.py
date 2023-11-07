@@ -1,27 +1,9 @@
 import streamlit as st
-# from login import login
-# from signup import cadastro
-# from remedios import remedios
 import requests
 from st_pages import Page, show_pages, add_page_title
 from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(page_title="Feed", layout="wide", initial_sidebar_state="expanded")
-
-# st.markdown(
-#     """
-# <style>
-#     [data-testid="collapsedControl"] {
-#         display: none
-#     }
-
-#     [data-testid="stSidebar"] {
-#         display: none;
-#     }
-# </style>
-# """,
-#     unsafe_allow_html=True,
-# )
 
 show_pages(
     [
@@ -55,9 +37,8 @@ if st.sidebar.button('Logout'):
 # 1- Home
 
 if menu == 'Home':
-    # response = requests.get('http://10.102.5.181:8501/home')
     st.markdown('<h2 style="text-align:center;">Home</h2>', unsafe_allow_html=True)
-    bem_vindos = f"Bem-vindo(a) à nossa comunidade!"
+    bem_vindos = f"Bem-vindo(a) à comunidade SweetChat!"
     st.markdown(f"<h3 style='text-align: center;'>{bem_vindos}</h3>", unsafe_allow_html=True)
 
 # 2- Comunidade
@@ -103,21 +84,19 @@ if menu == 'Comunidade':
             st.warning("Por favor, digite sua mensagem")
 
     display_messages()
-
-    # with open('app/style.css') as f:
-    #     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
         
 # 3- Meus Medicamentos        
 
 if menu == 'Meus Medicamentos':
+    remedios = []
     st.markdown('<h2 style="text-align:center;">Meus Medicamentos</h2>', unsafe_allow_html=True)
     remedio = st.text_input("Adicione um novo Medicamento:")
-    # response = requests.get('http://10.102.5.181:8501/avisos')              
+    if st.button('Adicionar'):
+        st.session_state.user_entries.append(remedio)  
 
-# def main():
-#     if st.session_state['pagina'] == "login":
-#         login()
-#     elif st.session_state['pagina'] == "cadastro":
-#         cadastro()
-#     elif st.session_state['pagina'] == 'remedios':
-#         remedios()
+    if 'user_entries' not in st.session_state:
+        st.session_state.user_entries = []
+
+    st.write('Medicamentos registrados:')
+    for entry in st.session_state.user_entries:
+        st.write(entry)
